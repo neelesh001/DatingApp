@@ -1,0 +1,10 @@
+<h4>Internal Server Error</h4>
+
+@if(error) {
+    <h4 class="text-danger">Error : {{error.message}}</h4>
+    <p class="font-weight-bold">If you are seeing this error then plese check API or Server</p>
+    <p class="font-weight-bold">Following is the Stack Trace</p>
+    <code class="mt-5" style="background-color: whitesmoke;">
+        {{error.details}}
+    </code>
+}
