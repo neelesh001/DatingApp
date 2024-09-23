@@ -9,13 +9,27 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
+
+builder.Services.AddCors(options =>
+            {                
+                options.AddPolicy("CorsPolicy", 
+                builder => builder
+                .WithOrigins("http://localhost:4200", "https://localhost:4200")
+                .WithMethods("GET", "POST", "PUT", "DELETE")
+                .AllowAnyHeader().AllowCredentials().Build());
+            });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>();
-app.UseCors(x => x.AllowAnyHeader().AllowAnyHeader()
-    .WithOrigins("http://localhost:4200", "https://localhost:4200"));
+// app.UseCors(x => x.AllowAnyHeader().AllowAnyHeader()
+//     .WithMethods("GET", "POST", "PUT", "DELETE")
+//     .WithOrigins("http://localhost:4200", "https://localhost:4200"));
 
+app.UseRouting();
+
+app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 
